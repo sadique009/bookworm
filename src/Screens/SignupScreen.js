@@ -316,7 +316,7 @@ import {
       alignItems: 'center',
       justifyContent: 'center',
       // marginVertical: 40,
-      backgroundColor: 'white',
+      backgroundColor: '#E6FFFD',
     },
     head: {
       fontSize: 20,

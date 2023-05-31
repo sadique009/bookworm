@@ -71,19 +71,20 @@ export default function Navigation() {
           component={TabRoutes}
         /> */}
 
-      {/* <Stack.Navigator initialRouteName="TabScreen"> */}
-      <Stack.Navigator initialRouteName="LoginScreen">
+      <Stack.Navigator initialRouteName="TabScreen">
+      {/* <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen
           options={{headerShown: false}}
           name="LoginScreen"
           component={LoginScreen}
-        />
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="TabScreen"
-          component={TabRoutes}
-        />
-        <Stack.Screen name="SignupScreen" component={SignupScreen} />
+        /> */}
+     
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="TabScreen"
+        component={TabRoutes}
+      />
+        {/* <Stack.Screen name="SignupScreen" component={SignupScreen} /> */}
         <Stack.Screen name="BookCategory" component={BookCategory} />
         <Stack.Screen name="BookDetail" component={BookDetail} />
         <Stack.Screen name="SearchScreen" component={SearchScreen} />

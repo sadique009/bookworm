@@ -5,12 +5,13 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  TouchableOpacity
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+// import {} from 'react-native-gesture-handler';
 
 const SearchScreen = ({navigation}) => {
   const [booksData, setBooksData] = useState([]);
