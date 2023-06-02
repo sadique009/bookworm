@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
@@ -91,10 +91,17 @@ const SearchScreen = ({navigation}) => {
         </View>
         {filteredData.map(item => {
           let thumbnail =
-            item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail;
+            item.volumeInfo.imageLinks &&
+            item.volumeInfo.imageLinks.thumbnail &&
+            item.volumeInfo.imageLinks.smallThumbnail;
+
+          const unit = 'Rs';
           const price =
             item.saleInfo.retailPrice && item.saleInfo.retailPrice.amount;
-          return (
+
+          return !filteredData ? (
+            <Text>'Loading...'</Text>
+          ) : (
             <View key={item.id} style={styles.card}>
               <TouchableOpacity
                 onPress={() => {
@@ -103,12 +110,15 @@ const SearchScreen = ({navigation}) => {
                     bookItem,
                   });
                 }}>
-                <Image
-                  style={styles.image}
-                  source={require('../../assets/genres/book.png')}
-
-                  // source={thumbnail}
-                />
+                {thumbnail ? (
+                  <Image style={styles.image} source={{uri: thumbnail}} />
+                ) : (
+                  <Image
+                    style={styles.image}
+                    s
+                    source={require('../../assets/genres/book.png')}
+                  />
+                )}
               </TouchableOpacity>
 
               <View>
@@ -120,9 +130,14 @@ const SearchScreen = ({navigation}) => {
                   No of Pages :- {item.volumeInfo.pageCount}
                 </Text>
                 <Text style={styles.name}>
-                  Average Rating :- {item.volumeInfo.averageRating}
+                  Average Rating :-{' '}
+                  {item.volumeInfo.averageRating
+                    ? item.volumeInfo.averageRating
+                    : 'Not available'}
                 </Text>
-                <Text style={styles.name}>Price :- Rs {price}</Text>
+                <Text style={styles.name}>
+                  Price :- {price ? `${unit} ${price}` : 'Not available'}
+                </Text>
               </View>
               <View
                 style={{

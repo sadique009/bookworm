@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useMyBooks} from '../../context/MyBooksProvider';
 
 const BookDetail = ({route, navigation, show, item}) => {
+
   const {bookItem} = route.params;
   console.log('book details are: ', bookItem);
 
@@ -93,14 +94,23 @@ const BookDetail = ({route, navigation, show, item}) => {
       </View>
     );
   } else {
+    let thumbnail =
+      bookItem.volumeInfo.imageLinks &&
+      bookItem.volumeInfo.imageLinks.thumbnail &&
+      bookItem.volumeInfo.imageLinks.smallThumbnail;
     return (
       <ScrollView style={styles.container}>
         <>
           <View key={bookItem.id} style={styles.card}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/genres/book.png')}
-            />
+            {thumbnail ? (
+              <Image style={styles.image} source={{uri: thumbnail}} />
+            ) : (
+              <Image
+                style={styles.image}
+                s
+                source={require('../../assets/genres/book.png')}
+              />
+            )}
 
             <View>
               <Text style={styles.name1}>{bookItem.volumeInfo.title}</Text>
@@ -114,9 +124,9 @@ const BookDetail = ({route, navigation, show, item}) => {
               <Text style={styles.name}>
                 No of Pages :- {bookItem.volumeInfo.pageCount}
               </Text>
-              <Text style={styles.name}>
+              {/* <Text style={styles.name}>
                 Average Rating :- {bookItem.volumeInfo.averageRating}
-              </Text>
+              </Text> */}
               <Text style={styles.name}>
                 Author name :- {bookItem.volumeInfo.authors}
               </Text>
@@ -140,8 +150,8 @@ const BookDetail = ({route, navigation, show, item}) => {
                   color={saved ? 'red' : 'grey'}
                   onPress={
                     () => {
-                      onToggleSave(bookItem),
-                      alert('Item added to favourites');
+                      onToggleSave(bookItem), alert('Item added to favourites');
+                      // navigation.navigate('Favourites', {bookItem});
                     }
                     // setFavourites(true);
 

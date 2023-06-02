@@ -48,7 +48,7 @@ export default function BookCategory({route, navigation}) {
   // };
   const {booksData} = route.params;
 
-  // console.log('params data:', booksData);
+  console.log('params data:', booksData);
 
   if (booksData === '') {
     return (
@@ -61,11 +61,19 @@ export default function BookCategory({route, navigation}) {
       <>
         <ScrollView style={styles.container}>
           {booksData.map(item => {
+            // setBookItem(item);
             let thumbnail =
               item.volumeInfo.imageLinks &&
+              item.volumeInfo.imageLinks.smallThumbnail &&
               item.volumeInfo.imageLinks.thumbnail;
+
+            const unit = 'Rs';
+
             const price =
               item.saleInfo.retailPrice && item.saleInfo.retailPrice.amount;
+
+            const previewlink = item.volumeInfo.previewLink;
+
             return (
               <View key={item.id} style={styles.card}>
                 <TouchableOpacity
@@ -79,11 +87,29 @@ export default function BookCategory({route, navigation}) {
                   }}
                   // style={styles.categoryCard}
                 >
-                  <Image
+                  {thumbnail ? (
+                    <Image style={styles.image} source={{uri: thumbnail}} />
+                  ) : (
+                    <Image
+                      style={styles.image}
+                      s
+                      source={require('../../assets/genres/book.png')}
+                    />
+                  )}
+
+                  {/* <Image
                     style={styles.image}
                     source={require('../../assets/genres/book.png')}
+                    // source={{uri: item.volumeInfo.imageLinks.smallThumbnail}}
                     // source={thumbnail}
-                  />
+                  /> */}
+
+                  {/* <Image
+                    style={styles.image}
+                    // source={require('../../assets/genres/book.png')}
+                    source={{uri: item.volumeInfo.imageLinks.smallThumbnail}}
+                    // source={thumbnail}
+                  /> */}
                 </TouchableOpacity>
 
                 <View>
@@ -94,10 +120,16 @@ export default function BookCategory({route, navigation}) {
                   <Text style={styles.name}>
                     No of Pages :- {item.volumeInfo.pageCount}
                   </Text>
+                  {/* <Text style={styles.name}>Preview :- {previewlink}</Text> */}
                   <Text style={styles.name}>
-                    Average Rating :- {item.volumeInfo.averageRating}
+                    Average Rating :-{' '}
+                    {item.volumeInfo.averageRating
+                      ? item.volumeInfo.averageRating
+                      : 'Not available'}
                   </Text>
-                  <Text style={styles.name}>Price :- Rs {price}</Text>
+                  <Text style={styles.name}>
+                    Price :- {price ? `${unit} ${price}` : 'Not available'}
+                  </Text>
                 </View>
                 {/* <View>
                   <EntypoIcon
@@ -180,8 +212,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E6FFFD',
     // justifyContent: 'space-evenly',
     // alignItems: 'center',
-
-  
   },
 
   // card: {
@@ -233,14 +263,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-   
     width: 400,
-    height: 250,
+    height: 300,
     alignSelf: 'center',
     marginBottom: 5,
     padding: 10,
     borderRadius: 10,
-     // width: 200,
+    // width: 200,
     // height: 200,
     // margin: 10,
     // justifyContent: 'center',

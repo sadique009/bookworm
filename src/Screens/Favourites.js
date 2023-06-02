@@ -9,19 +9,24 @@ import {
 } from 'react-native';
 // import BookDetail from './BookDetail';
 // import {} from 'react-native-gesture-handler';
+
 import {useContext, useState} from 'react';
 // import {MyBooksContext} from '../../context/MyBooksProvider';
+
 import {useMyBooks} from '../../context/MyBooksProvider';
 import BookDetail from './BookDetail';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 export default function Favourites({route, favs, showFavs, navigation}) {
   const [favourites, setFavourites] = useState(true);
+
   const {savedBooks} = useMyBooks();
   console.log('fav books :', savedBooks);
-  // const {saveFavs} = route.params;
+  // const {bookItem} = route.params;
 
   // console.log(saveFavs);
+
+  // we are consuming the context here.
   // const context = useContext(MyBooksContext);
 
   // alternate method to write the above code.
@@ -43,72 +48,96 @@ export default function Favourites({route, favs, showFavs, navigation}) {
     setFavourites(false);
     alert('Are you sure you want to remove?');
   };
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.card}>
-        <View>
-          <Image
-            style={styles.image}
-            source={require('../../assets/genres/book.png')}
-          />
 
-          <View>{/* <Text>{data.volumeInfo.title}</Text> */}</View>
-        </View>
-        <View>
-          <Text style={styles.name1}>Ignite Me</Text>
-          <Text style={styles.name}>Price : Rs 328.71</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: 20,
-            }}>
-            <View>
-              <Text style={styles.name}>Remove from favourites</Text>
-            </View>
-            <View>
-              <EntypoIcon
-                color={favourites === true ? 'red' : 'grey'}
-                // color={saved ? 'red' : 'black'}
-                onPress={() => removeFav()}
-                // alert('Item added to favourites');
-                // onToggleSave(bookItem)
-                // {
-                //   saveFavourites;
-                // }
-                // {
-                //   getFavourites;
-                // }
-                // setFavs(...showFavs, showFavs);
+  // if (savedBooks) {
+  //   return (
+  //     <ScrollView style={styles.container}>
+  //       <View style={styles.card}>
+  //         <View>
+  //           <Image
+  //             style={styles.image}
+  //             source={require('../../assets/genres/book.png')}
+  //           />
+  //         </View>
+  //         <View>
+  //           <Text style={styles.name1}>{savedBooks.volumeInfo.title}</Text>
+  //           <Text style={styles.name}>Price : Rs 328.71</Text>
+  //           <View
+  //             style={{
+  //               flexDirection: 'row',
+  //               justifyContent: 'center',
+  //               alignItems: 'center',
+  //               margin: 20,
+  //             }}>
+  //             <View>
+  //               <Text style={styles.name}>Remove from favourites</Text>
+  //             </View>
+  //             <View>
+  //               <EntypoIcon
+  //                 color={favourites === true ? 'red' : 'grey'}
+  //                 // color={saved ? 'red' : 'black'}
+  //                 onPress={() => removeFav()}
+  //                 // alert('Item added to favourites');
+  //                 // onToggleSave(bookItem)
+  //                 // {
+  //                 //   saveFavourites;
+  //                 // }
+  //                 // {
+  //                 //   getFavourites;
+  //                 // }
+  //                 // setFavs(...showFavs, showFavs);
 
-                // console.log('resultant data is:', showFavs);
-                // alert(showFavs.volumeInfo.title);
+  //                 // console.log('resultant data is:', showFavs);
+  //                 // alert(showFavs.volumeInfo.title);
 
-                // setFavs(showFavs);
-                // navigation.navigate('Favourites', {showFavs});
-                // <View>
-                //   <Favourites />
-                // </View>;
+  //                 // setFavs(showFavs);
+  //                 // navigation.navigate('Favourites', {showFavs});
+  //                 // <View>
+  //                 //   <Favourites />
+  //                 // </View>;
 
-                name="heart"
-                size={28}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-    </ScrollView>
-  );
+  //                 name="heart"
+  //                 size={28}
+  //               />
+  //             </View>
+  //           </View>
+  //         </View>
+  //       </View>
+  //     </ScrollView>
+
+  //     // <View>
+  //     //   <Text>{bookItem.volumeInfo.title}</Text>
+  //     // </View>
+  //   );
   // }
-  // return (
-  //   <View>
-  //     {/* <FlatList
-  //       data={savedBooks}
-  //       renderItem={({item}) => <BookDetail bookItem={item} />}></FlatList>
-  //     <Text>Favourites</Text> */}
-  //   </View>
-  // );
+
+  // let thumbnail =
+  // bookItem.volumeInfo.imageLinks &&
+  // bookItem.volumeInfo.imageLinks.thumbnail &&
+  // bookItem.volumeInfo.imageLinks.smallThumbnail;
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={savedBooks}
+        renderItem={({item}) => (
+          <View>
+            {item.volumeInfo.imageLinks.smallThumbnail ? (
+              <Image style={styles.image} source={{uri: item.volumeInfo.imageLinks.smallThumbnail}} />
+            ) : (
+              <Image
+                style={styles.image}
+                s
+                source={require('../../assets/genres/book.png')}
+              />
+            )}
+            <Text style={styles.name1}>{item.volumeInfo.title}</Text>
+            <Text style={styles.name}>Price : Rs 328.71</Text>
+          </View>
+        )}></FlatList>
+      {/* <Text>Favourites</Text> */}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

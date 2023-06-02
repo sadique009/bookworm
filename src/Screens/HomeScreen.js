@@ -10,7 +10,7 @@ import {
   ImageBackground,
   ScrollView,
   TextInput,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 import axios from 'axios';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -27,7 +27,6 @@ export default function HomeScreen({navigation}) {
   const [search, setSearch] = useState('');
   // const route = useRoute();
 
-  
   const baseUrl = `https://www.googleapis.com/books/v1/volumes`;
 
   const request = category => {
@@ -36,16 +35,18 @@ export default function HomeScreen({navigation}) {
       .then(response => {
         setBooksData(response.data.items);
         setFilteredData(response.data.items);
-        // console.log(response.data.items);
-        // navigation.navigate('Dummy', {booksData: booksData});
+        console.log('resp data is', response.data.items);
+
         navigation.navigate('BookCategory', {booksData});
+
+        // navigation.navigate('Dummy', {booksData: booksData});
       })
       .catch(err => {
         console.log(err);
       });
   };
   // useEffect(() => {
-  //   request(category);
+  //   request();
   // }, []);
 
   //   request();
@@ -100,14 +101,15 @@ export default function HomeScreen({navigation}) {
             onChangeText={text => {
               searchFilter(text);
             }}
+            onPressIn={() => navigation.navigate('SearchScreen')}
             // onKeyPress={request}
             placeholder="Search for your favourite books..."
           />
           <FontistoIcon
-            onPress={() => {
-              navigation.navigate('SearchScreen');
-              // alert('search pressed');
-            }}
+            // onPress={() => {
+            //   navigation.navigate('SearchScreen');
+            //   // alert('search pressed');
+            // }}
             style={{position: 'absolute', right: 35}}
             name="search"
             size={25}
@@ -121,10 +123,10 @@ export default function HomeScreen({navigation}) {
 
         <View style={styles.categoryRow}>
           <TouchableHighlight
-            onPress={
-              (() => request('Romance+novel')
-             )
-            }>
+            onPress={() => {
+              request('Romance+novel');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre1.jpg')}
               style={styles.categoryCard}>
@@ -132,7 +134,11 @@ export default function HomeScreen({navigation}) {
             </ImageBackground>
           </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => request('Memoir')}>
+          <TouchableHighlight
+            onPress={() => {
+              request('Memoir');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre2.jpg')}
               style={styles.categoryCard}>
