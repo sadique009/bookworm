@@ -22,6 +22,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 // import {} from 'react-native-gesture-handler';
 import BookDetail from './BookDetail';
@@ -31,10 +32,10 @@ import {useMyBooks} from '../../context/MyBooksProvider';
 export default function BookCategory({route, navigation}) {
   const [showBookDetail, setShowBookDetail] = useState(false);
   const [favourites, setFavourites] = useState(false);
-  const [bookItem, setBookItem] = useState('');
+  // const [bookItem, setBookItem] = useState('');
   const {isBookSaved, onToggleSave} = useMyBooks();
 
-  const saved = isBookSaved(bookItem);
+  // const saved = isBookSaved(bookItem);
 
   // console.log('line no 24', booksData);
 
@@ -50,88 +51,89 @@ export default function BookCategory({route, navigation}) {
 
   console.log('params data:', booksData);
 
-  if (booksData === '') {
-    return (
-      <View>
-        <Text style={styles.name1}>loading...</Text>
-      </View>
-    );
-  } else {
-    return (
-      <>
-        <ScrollView style={styles.container}>
-          {booksData.map(item => {
-            // setBookItem(item);
-            let thumbnail =
-              item.volumeInfo.imageLinks &&
-              item.volumeInfo.imageLinks.smallThumbnail &&
-              item.volumeInfo.imageLinks.thumbnail;
+  // if (booksData === '') {
+  //   return (
+  //     <View>
+  //       <Text style={styles.name1}>loading...</Text>
+  //     </View>
+  //   );
+  // } else {
+  return (
+    <>
+      <ScrollView style={styles.container}>
+        {booksData.map(item => {
+          // setBookItem(item);
+          let thumbnail =
+            item.volumeInfo.imageLinks &&
+            item.volumeInfo.imageLinks.smallThumbnail &&
+            item.volumeInfo.imageLinks.thumbnail;
 
-            const unit = 'Rs';
+          const unit = 'Rs';
 
-            const price =
-              item.saleInfo.retailPrice && item.saleInfo.retailPrice.amount;
+          const price =
+            item.saleInfo.retailPrice && item.saleInfo.retailPrice.amount;
 
-            const previewlink = item.volumeInfo.previewLink;
+          const previewlink = item.volumeInfo.previewLink;
 
-            return (
-              <View key={item.id} style={styles.card}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setBookItem(item);
-                    navigation.navigate('BookDetail', {
-                      bookItem,
-                    });
+          return (
+            <View key={item.id} style={styles.card}>
+              <TouchableOpacity
+                onPress={() => {
+                  // setBookItem(item);
+                  const bookItem = item;
+                  navigation.navigate('BookDetail', {
+                    bookItem,
+                  });
 
-                    // console.log(bookItem);
-                  }}
-                  // style={styles.categoryCard}
-                >
-                  {thumbnail ? (
-                    <Image style={styles.image} source={{uri: thumbnail}} />
-                  ) : (
-                    <Image
-                      style={styles.image}
-                      s
-                      source={require('../../assets/genres/book.png')}
-                    />
-                  )}
+                  // console.log(bookItem);
+                }}
+                // style={styles.categoryCard}
+              >
+                {thumbnail ? (
+                  <Image style={styles.image} source={{uri: thumbnail}} />
+                ) : (
+                  <Image
+                    style={styles.image}
+                    s
+                    source={require('../../assets/genres/book.png')}
+                  />
+                )}
 
-                  {/* <Image
+                {/* <Image
                     style={styles.image}
                     source={require('../../assets/genres/book.png')}
                     // source={{uri: item.volumeInfo.imageLinks.smallThumbnail}}
                     // source={thumbnail}
                   /> */}
 
-                  {/* <Image
+                {/* <Image
                     style={styles.image}
                     // source={require('../../assets/genres/book.png')}
                     source={{uri: item.volumeInfo.imageLinks.smallThumbnail}}
                     // source={thumbnail}
                   /> */}
-                </TouchableOpacity>
+              </TouchableOpacity>
 
-                <View>
-                  <Text style={styles.name1}>{item.volumeInfo.title}</Text>
-                  <Text style={styles.name}>
-                    Published Date :- {item.volumeInfo.publishedDate}
-                  </Text>
-                  <Text style={styles.name}>
-                    No of Pages :- {item.volumeInfo.pageCount}
-                  </Text>
-                  {/* <Text style={styles.name}>Preview :- {previewlink}</Text> */}
-                  <Text style={styles.name}>
-                    Average Rating :-{' '}
-                    {item.volumeInfo.averageRating
-                      ? item.volumeInfo.averageRating
-                      : 'Not available'}
-                  </Text>
-                  <Text style={styles.name}>
-                    Price :- {price ? `${unit} ${price}` : 'Not available'}
-                  </Text>
-                </View>
-                {/* <View>
+              <View>
+                <Text style={styles.name1}>{item.volumeInfo.title}</Text>
+                <Text style={styles.name}>
+                  Published Date :- {item.volumeInfo.publishedDate}
+                </Text>
+                <Text style={styles.name}>
+                  No of Pages :- {item.volumeInfo.pageCount}
+                </Text>
+                <Linking style={styles.name}>{previewlink}</Linking>
+                <Text style={styles.name}>
+                  Average Rating :-{' '}
+                  {item.volumeInfo.averageRating
+                    ? item.volumeInfo.averageRating
+                    : 'Not available'}
+                </Text>
+                <Text style={styles.name}>
+                  Price :- {price ? `${unit} ${price}` : 'Not available'}
+                </Text>
+              </View>
+              {/* <View>
                   <EntypoIcon
                     // color={favourites === true ? 'red' : 'black'}
                     color={saved ? 'red' : 'black'}
@@ -161,49 +163,49 @@ export default function BookCategory({route, navigation}) {
                     size={28}
                   />
                 </View> */}
-              </View>
-            );
-          })}
-        </ScrollView>
-      </>
-      // <SafeAreaView style={styles.container}>
-      //   {/* <Text>Category</Text> */}
-      //   <FlatList
-      //     data={booksData}
-      //     numColumns={2}
-      //     renderItem={({item}) => (
+            </View>
+          );
+        })}
+      </ScrollView>
+    </>
+    // <SafeAreaView style={styles.container}>
+    //   {/* <Text>Category</Text> */}
+    //   <FlatList
+    //     data={booksData}
+    //     numColumns={2}
+    //     renderItem={({item}) => (
 
-      //       (
-      //         <>
-      //           <View style={styles.categoryRow}>
-      //             <TouchableOpacity
-      //               onPress={
-      //                 () => {
-      //                   navigation.navigate('BookDetail', {bookItem});
-      //                 }
-      //                 // ,
-      //                 // setShowBookDetail(true),
-      //                 // setBookItem(item)
-      //               }
-      //               style={styles.categoryCard}>
-      //               <Text style={styles.title}>
-      //                 Title : {item.volumeInfo.title}
-      //               </Text>
-      //               <Text style={styles.title2}>
-      //                 PublishedDate : {item.volumeInfo.publishedDate}
-      //               </Text>
-      //               <Text style={styles.title2}>
-      //                 No of Pages : {item.volumeInfo.pageCount}
-      //               </Text>
-      //             </TouchableOpacity>
-      //           </View>
-      //           {/* <BookDetail show={showBookDetail} item={bookItem} /> */}
-      //         </>
-      //       )
-      //     )}></FlatList>
-      // </SafeAreaView>
-    );
-  }
+    //       (
+    //         <>
+    //           <View style={styles.categoryRow}>
+    //             <TouchableOpacity
+    //               onPress={
+    //                 () => {
+    //                   navigation.navigate('BookDetail', {bookItem});
+    //                 }
+    //                 // ,
+    //                 // setShowBookDetail(true),
+    //                 // setBookItem(item)
+    //               }
+    //               style={styles.categoryCard}>
+    //               <Text style={styles.title}>
+    //                 Title : {item.volumeInfo.title}
+    //               </Text>
+    //               <Text style={styles.title2}>
+    //                 PublishedDate : {item.volumeInfo.publishedDate}
+    //               </Text>
+    //               <Text style={styles.title2}>
+    //                 No of Pages : {item.volumeInfo.pageCount}
+    //               </Text>
+    //             </TouchableOpacity>
+    //           </View>
+    //           {/* <BookDetail show={showBookDetail} item={bookItem} /> */}
+    //         </>
+    //       )
+    //     )}></FlatList>
+    // </SafeAreaView>
+  );
+  // }
 }
 
 const styles = StyleSheet.create({

@@ -87,13 +87,16 @@ const BookDetail = ({route, navigation, show, item}) => {
   //   }
   // };
 
-  if (bookItem === '') {
-    return (
-      <View style={{flex: 1, backgroundColor: '#E6FFFD'}}>
-        <Text style={styles.name1}>loading...</Text>
-      </View>
-    );
-  } else {
+  // if (bookItem === '') {
+  //   return (
+  //     <View style={{flex: 1, backgroundColor: '#E6FFFD'}}>
+  //       <Text style={styles.name1}>loading...</Text>
+  //     </View>
+  //   );
+
+  // } else {
+
+  // {booksData?:null}
     let thumbnail =
       bookItem.volumeInfo.imageLinks &&
       bookItem.volumeInfo.imageLinks.thumbnail &&
@@ -187,7 +190,7 @@ const BookDetail = ({route, navigation, show, item}) => {
       </ScrollView>
     );
   }
-};
+// };
 
 // <SafeAreaView style={styles.container}>
 //   {/* <Text>Category</Text> */}

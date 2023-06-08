@@ -11,79 +11,115 @@ import {
   ScrollView,
   TextInput,
   TouchableHighlight,
+  ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import BookCard from './BookCard';
 import BookCategory from './BookCategory';
 // import {TouchableHighlight} from 'react-native-gesture-handler';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SearchScreen from './SearchScreen';
 
-export default function HomeScreen({navigation}) {
-  const [booksData, setBooksData] = useState([]);
+export default function HomeScreen() {
+  const navigation = useNavigation();
+  // const [booksData, setBooksData] = useState(["alice", "in", "wonderland"]);
+  // const [booksData, setBooksData] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
   // const route = useRoute();
 
   const baseUrl = `https://www.googleapis.com/books/v1/volumes`;
 
-  const request = category => {
+  const request = async(category) => {
+    setLoading(true);
     axios
       .get(`${baseUrl}?q=${category}`)
       .then(response => {
-        setBooksData(response.data.items);
-        setFilteredData(response.data.items);
-        console.log('resp data is', response.data.items);
+        const booksData=response.data.items
+        // setBooksData(response.data.items);
+        // setFilteredData(response.data.items);
 
+        setLoading(false);
+
+        // console.log('resp data is', response.data.items);
         navigation.navigate('BookCategory', {booksData});
+        console.log('books data is', booksData);
 
-        // navigation.navigate('Dummy', {booksData: booksData});
+        // if (booksData !== null) {
+
+        // }
       })
       .catch(err => {
         console.log(err);
+        setLoading(false);
       });
+
+      // try {
+      //   const response = await axios.get('https://api.example.com/data'); // Replace with your API endpoint
+      //   const data = response.data;
+        
+      //   // Navigate to the next screen and pass the data as a parameter
+      //   navigation.navigate('NextScreen', { data });
+      // } catch (error) {
+      //   console.error('Error fetching data:', error);
+      // }
   };
+
+  const navigateFn = () => {
+    navigation.navigate('BookCategory', {booksData});
+  };
+
   // useEffect(() => {
-  //   request();
+  //   request('Romance+novel');
   // }, []);
 
   //   request();
 
-  const searchFilter = text => {
-    if (text) {
-      const newData = booksData.filter(item => {
-        const itemData = item.volumeInfo.title
-          ? item.volumeInfo.title.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredData(newData);
-      setSearch(text);
-    } else {
-      setFilteredData(booksData);
-      setSearch(text);
-    }
-  };
+  // const searchFilter = text => {
+  //   if (text) {
+  //     const newData = booksData.filter(item => {
+  //       const itemData = item.volumeInfo.title
+  //         ? item.volumeInfo.title.toUpperCase()
+  //         : ''.toUpperCase();
+  //       const textData = text.toUpperCase();
+  //       return itemData.indexOf(textData) > -1;
+  //     });
+  //     setFilteredData(newData);
+  //     setSearch(text);
+  //   } else {
+  //     setFilteredData(booksData);
+  //     setSearch(text);
+  //   }
+  // };
 
-  const itemView = ({item}) => {
-    return (
-      <Text style={styles.itemStyle}>
-        {item.id}
-        {'. '}
-        {item.volumeInfo.title.toUpperCase()}
-      </Text>
-    );
-  };
+  // const itemView = ({item}) => {
+  //   return (
+  //     <Text style={styles.itemStyle}>
+  //       {item.id}
+  //       {'. '}
+  //       {item.volumeInfo.title.toUpperCase()}
+  //     </Text>
+  //   );
+  // };
 
-  const ItemSeparatorView = () => {
+  // const ItemSeparatorView = () => {
+  //   return (
+  //     <View
+  //       style={{height: 0.5, width: '100%', backgroundColor: '#c8c8c8'}}></View>
+  //   );
+  // };
+
+  if (loading) {
     return (
-      <View
-        style={{height: 0.5, width: '100%', backgroundColor: '#c8c8c8'}}></View>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator />
+      </View>
     );
-  };
+  }
 
   return (
     <>
@@ -123,10 +159,14 @@ export default function HomeScreen({navigation}) {
 
         <View style={styles.categoryRow}>
           <TouchableHighlight
-            onPress={() => {
-              request('Romance+novel');
+            onPress={
+              () => {
+                request('Romance+novel');
+              }
+              // setBooksData(booksData);
+
               // navigation.navigate('BookCategory', {booksData});
-            }}>
+            }>
             <ImageBackground
               source={require('../../assets/genres/genre1.jpg')}
               style={styles.categoryCard}>
@@ -148,7 +188,11 @@ export default function HomeScreen({navigation}) {
         </View>
 
         <View style={styles.categoryRow}>
-          <TouchableHighlight onPress={() => request('Non-Fiction')}>
+          <TouchableHighlight
+            onPress={() => {
+              request('Non-Fiction');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre3.jpg')}
               style={styles.categoryCard}>
@@ -156,7 +200,11 @@ export default function HomeScreen({navigation}) {
             </ImageBackground>
           </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => request('Business')}>
+          <TouchableHighlight
+            onPress={() => {
+              request('Business');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre4.jpg')}
               style={styles.categoryCard}>
@@ -166,7 +214,11 @@ export default function HomeScreen({navigation}) {
         </View>
 
         <View style={styles.categoryRow}>
-          <TouchableHighlight onPress={() => request('Fiction')}>
+          <TouchableHighlight
+            onPress={() => {
+              request('Fiction');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre5.jpg')}
               style={styles.categoryCard}>
@@ -174,7 +226,11 @@ export default function HomeScreen({navigation}) {
             </ImageBackground>
           </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => request('Historical+Fiction')}>
+          <TouchableHighlight
+            onPress={() => {
+              request('Historical+Fiction');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre6.jpg')}
               style={styles.categoryCard}>
@@ -183,7 +239,11 @@ export default function HomeScreen({navigation}) {
           </TouchableHighlight>
         </View>
         <View style={styles.categoryRow}>
-          <TouchableHighlight onPress={() => request('Biography')}>
+          <TouchableHighlight
+            onPress={() => {
+              request('Biography');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre7.jpg')}
               style={styles.categoryCard}>
@@ -191,7 +251,11 @@ export default function HomeScreen({navigation}) {
             </ImageBackground>
           </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => request('"Crime+Thriller')}>
+          <TouchableHighlight
+            onPress={() => {
+              request('"Crime+Thriller');
+              // navigation.navigate('BookCategory', {booksData});
+            }}>
             <ImageBackground
               source={require('../../assets/genres/genre8.jpg')}
               style={styles.categoryCard}>
@@ -203,13 +267,13 @@ export default function HomeScreen({navigation}) {
         {/* <BookCard book={booksData} /> */}
       </ScrollView>
       {/* <View>
-        <FlatList
-          data={booksData}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={itemView}
-        />
-      </View> */}
+          <FlatList
+            data={booksData}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            renderItem={itemView}
+          />
+        </View> */}
     </>
   );
 }

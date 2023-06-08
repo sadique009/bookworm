@@ -108,13 +108,13 @@ import {
           const phone = userPhone;
           const password = userPassword;
           const address = userAddress;
-          setDoc(doc(db, 'name', dbName), {
-            Name: name,
-            Email: email,
-            Phone: phone,
-            Password: password,
-            Address: address,
-          });
+          // setDoc(doc(db, 'name', dbName), {
+          //   Name: name,
+          //   Email: email,
+          //   Phone: phone,
+          //   Password: password,
+          //   Address: address,
+          // });
         })
         .catch(re => {
           console.log(re);

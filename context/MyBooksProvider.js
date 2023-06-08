@@ -13,16 +13,47 @@ const MyBooksProvider = ({children}) => {
   const [loaded, setLoaded] = useState(false);
 
   // load the data when the component mounts.
-
   useEffect(() => {
     saveFavourites();
   }, []);
 
+  // persist the data everytime it changes.
   useEffect(() => {
     if (loaded) {
       getFavourites();
     }
   }, [savedBooks]);
+
+  const saveFavourites = async () => {
+    try {
+      await AsyncStorage.setItem('favs', JSON.stringify(savedBooks));
+      // console.log('saved book deets are:', saveFavs);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // saveFavourites();
+
+  const getFavourites = async () => {
+    try {
+      const favos = await AsyncStorage.getItem('favs');
+      if (favos) {
+        // setShowFavs(JSON.parse(favos));
+        const favosItem = JSON.parse(favos);
+        setSavedBooks(favosItem);
+        // console.log('retrieved book deets are:', favos);
+        // console.log('showFavs data is:', favos.volumeInfo.title);
+        // if (!favos === null) {
+        //   console.log('showFavs data is:', showFavs.volumeInfo.title);
+        // } else {
+        //   alert.alert('null');
+        // }
+      }
+      setLoaded(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const areBooksTheSame = (a, b) => {
     return JSON.stringify(a) === JSON.stringify(b);
@@ -44,36 +75,6 @@ const MyBooksProvider = ({children}) => {
     } else {
       // add to saved.
       setSavedBooks(bookItems => [bookItem, ...bookItems]);
-    }
-  };
-
-  const saveFavourites = async () => {
-    try {
-      await AsyncStorage.setItem('favs', JSON.stringify(savedBooks));
-      // console.log('saved book deets are:', saveFavs);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  // saveFavourites();
-
-  const getFavourites = async () => {
-    try {
-      const favos = await AsyncStorage.getItem('favs');
-      if (favos != null) {
-        // setShowFavs(JSON.parse(favos));
-        setSavedBooks(JSON.parse(favos));
-        // console.log('retrieved book deets are:', favos);
-        // console.log('showFavs data is:', favos.volumeInfo.title);
-        // if (!favos === null) {
-        //   console.log('showFavs data is:', showFavs.volumeInfo.title);
-        // } else {
-        //   alert.alert('null');
-        // }
-      }
-      setLoaded(true);
-    } catch (error) {
-      console.log(error);
     }
   };
 

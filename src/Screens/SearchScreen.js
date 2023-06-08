@@ -17,7 +17,7 @@ const SearchScreen = ({navigation}) => {
   const [booksData, setBooksData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState('');
-  const [bookItem, setBookItem] = useState('');
+  // const [bookItem, setBookItem] = useState('');
   const baseUrl = `https://www.googleapis.com/books/v1/volumes?q=allBooks&maxResults=40`;
   //   const baseUrl = `https://www.googleapis.com/books/v1/volumes?q=react`;
 
@@ -105,7 +105,7 @@ const SearchScreen = ({navigation}) => {
             <View key={item.id} style={styles.card}>
               <TouchableOpacity
                 onPress={() => {
-                  setBookItem(item);
+                  const bookItem = item;
                   navigation.navigate('BookDetail', {
                     bookItem,
                   });

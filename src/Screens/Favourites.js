@@ -62,16 +62,16 @@ export default function Favourites({route, favs, showFavs, navigation}) {
   //         <View>
   //           <Text style={styles.name1}>{savedBooks.volumeInfo.title}</Text>
   //           <Text style={styles.name}>Price : Rs 328.71</Text>
-  //           <View
-  //             style={{
-  //               flexDirection: 'row',
-  //               justifyContent: 'center',
-  //               alignItems: 'center',
-  //               margin: 20,
-  //             }}>
-  //             <View>
-  //               <Text style={styles.name}>Remove from favourites</Text>
-  //             </View>
+  // <View
+  //   style={{
+  //     flexDirection: 'row',
+  //     justifyContent: 'center',
+  //     alignItems: 'center',
+  //     margin: 20,
+  //   }}>
+  // <View>
+  //   <Text style={styles.name}>Remove from favourites</Text>
+  // </View>
   //             <View>
   //               <EntypoIcon
   //                 color={favourites === true ? 'red' : 'grey'}
@@ -112,18 +112,28 @@ export default function Favourites({route, favs, showFavs, navigation}) {
   // }
 
   // let thumbnail =
-  // bookItem.volumeInfo.imageLinks &&
-  // bookItem.volumeInfo.imageLinks.thumbnail &&
-  // bookItem.volumeInfo.imageLinks.smallThumbnail;
+  //   item.volumeInfo.imageLinks &&
+  //   item.volumeInfo.imageLinks.thumbnail &&
+  //   item.volumeInfo.imageLinks.smallThumbnail;
 
   return (
     <View style={styles.container}>
       <FlatList
         data={savedBooks}
         renderItem={({item}) => (
-          <View>
-            {item.volumeInfo.imageLinks.smallThumbnail ? (
-              <Image style={styles.image} source={{uri: item.volumeInfo.imageLinks.smallThumbnail}} />
+          <View style={styles.card}>
+            {item.volumeInfo.imageLinks &&
+            item.volumeInfo.imageLinks.thumbnail &&
+            item.volumeInfo.imageLinks.smallThumbnail ? (
+              <Image
+                style={styles.image}
+                source={{
+                  uri:
+                    item.volumeInfo.imageLinks &&
+                    item.volumeInfo.imageLinks.thumbnail &&
+                    item.volumeInfo.imageLinks.smallThumbnail,
+                }}
+              />
             ) : (
               <Image
                 style={styles.image}
@@ -132,7 +142,52 @@ export default function Favourites({route, favs, showFavs, navigation}) {
               />
             )}
             <Text style={styles.name1}>{item.volumeInfo.title}</Text>
-            <Text style={styles.name}>Price : Rs 328.71</Text>
+            {item.saleInfo.retailPrice && item.saleInfo.retailPrice.amount ? (
+              <Text style={styles.name}>
+                Price : {item.saleInfo.retailPrice && item.saleInfo.retailPrice.amount}
+              </Text>
+            ) : (
+              <Text style={styles.name}>Price : Not available</Text>
+            )}
+            <View>
+              {/* <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  margin: 20,
+                }}>
+                <View>
+                  <Text style={styles.name}>Remove from favourites</Text>
+                </View>
+                <EntypoIcon
+                  color={favourites === true ? 'red' : 'grey'}
+                  // color={saved ? 'red' : 'black'}
+                  onPress={() => removeFav()}
+                  // alert('Item added to favourites');
+                  // onToggleSave(bookItem)
+                  // {
+                  //   saveFavourites;
+                  // }
+                  // {
+                  //   getFavourites;
+                  // }
+                  // setFavs(...showFavs, showFavs);
+
+                  // console.log('resultant data is:', showFavs);
+                  // alert(showFavs.volumeInfo.title);
+
+                  // setFavs(showFavs);
+                  // navigation.navigate('Favourites', {showFavs});
+                  // <View>
+                  //   <Favourites />
+                  // </View>;
+
+                  name="heart"
+                  size={28}
+                />
+              </View> */}
+            </View>
           </View>
         )}></FlatList>
       {/* <Text>Favourites</Text> */}
