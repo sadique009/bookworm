@@ -122,7 +122,10 @@ export default function BookCategory({route, navigation}) {
                 <Text style={styles.name}>
                   No of Pages :- {item.volumeInfo.pageCount}
                 </Text>
-                <Linking style={styles.name}>{previewlink}</Linking>
+                {/* <Linking style={styles.name}>{previewlink}</Linking> */}
+                <TouchableOpacity onPress={() => Linking.openURL(previewlink)}>
+                  <Text style={styles.name}>Preview Link :- {previewlink}</Text>
+                </TouchableOpacity>
                 <Text style={styles.name}>
                   Average Rating :-{' '}
                   {item.volumeInfo.averageRating
